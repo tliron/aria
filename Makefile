@@ -13,8 +13,8 @@ all:
 release: test todo docs publish
 
 dev:
-	pip install -r dev-requirements.txt
-	pip install -e $(shell pwd)
+	pip install --upgrade --requirement dev-requirements.txt
+	pip install --editable $(shell pwd)
 
 install:
 	python setup.py install
@@ -26,10 +26,9 @@ test:
 	tox
 
 docs:
-	pip install -r docs/requirements.txt
-	cd docs
-	make html
-	pandoc README.md -f markdown -t rst -s -o README.rst
+	#pandoc README.md -f markdown -t rst -s -o docs/README.rst
+	pip install --upgrade --requirement sphinx/requirements.txt
+	cd sphinx && make html
 
 prepare:
 	python setup.py sdist
@@ -38,5 +37,5 @@ publish: prepare
 	python setup.py upload
 
 cleanup:
-	rm -fr dist/ *.egg-info/ .tox/ .coverage build/
+	rm -fr dist/ *.egg-info/ .tox/ .coverage build/ docs/
 	find . -name "*.pyc" -exec rm -rf {} \;
